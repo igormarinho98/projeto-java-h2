@@ -1,0 +1,17 @@
+/.settings/
+/bin/
+/target/
+*.class
+
+
+.DS_Store
+Thumbs.db
+
+
+*.iml
+*.log
+.idea/
+*.swp
+
+*.mv.db
+*.trace.db
