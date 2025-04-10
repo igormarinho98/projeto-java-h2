@@ -11,66 +11,67 @@ import com.javaent.model.Usuario;
 
 public class UsuarioDAO {
 
-    public void criarTabela() {
-        try {
-            Connection conn = Database.conectar();
-            Statement stmt = conn.createStatement();
+	public void criarTabela() {
+		try {
+			Connection conn = Database.conectar();
+			Statement stmt = conn.createStatement();
 
-            String sql = "CREATE TABLE IF NOT EXISTS usuario (" +
-                         "id INT AUTO_INCREMENT PRIMARY KEY, " +
-                         "nome VARCHAR(100), " +
-                         "email VARCHAR(100))";
+			String sql = "CREATE TABLE IF NOT EXISTS usuario (" +
+		             "id INT AUTO_INCREMENT PRIMARY KEY, " +
+		             "nome VARCHAR(100), " +
+		             "email VARCHAR(100), " +
+		             "profissao VARCHAR(100)" +
+		             ");";
+			stmt.execute(sql);
 
-            stmt.execute(sql);
+			stmt.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-            stmt.close();
-            conn.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public void inserirUsuario(Usuario usuario) {
+		try {
+			Connection conn = Database.conectar();
 
-    public void inserirUsuario(Usuario usuario) {
-        try {
-            Connection conn = Database.conectar();
+			String sql = "INSERT INTO usuario (nome, email, profissao) VALUES (?, ?,?)";
+			PreparedStatement stmt = conn.prepareStatement(sql);
 
-            String sql = "INSERT INTO usuario (nome, email) VALUES (?, ?)";
-            PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, usuario.getNome());
+			stmt.setString(2, usuario.getEmail());
+			stmt.setString(3, usuario.getProfissao());
+			stmt.executeUpdate();
 
-            stmt.setString(1, usuario.getNome());
-            stmt.setString(2, usuario.getEmail());
+			stmt.close();
+			conn.close();
+		} catch (Exception e) {
+			System.out.println("Erro ao inserir usuário");
+		}
+	}
 
-            stmt.executeUpdate();
+	public void listarUsuarios() {
+		try {
+			Connection conn = Database.conectar();
+			Statement stmt = conn.createStatement();
 
-            stmt.close();
-            conn.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+			String sql = "SELECT * FROM usuario";
+			ResultSet rs = stmt.executeQuery(sql);
 
-    public void listarUsuarios() {
-        try {
-            Connection conn = Database.conectar();
-            Statement stmt = conn.createStatement();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String nome = rs.getString("nome");
+				String email = rs.getString("email");
+				String profissao = rs.getString("profissao");
 
-            String sql = "SELECT * FROM usuario";
-            ResultSet rs = stmt.executeQuery(sql);
+				System.out.println(id + " | " + nome + " | " + email + " | " + profissao);
+			}
 
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String nome = rs.getString("nome");
-                String email = rs.getString("email");
-
-                System.out.println(id + " | " + nome + " | " + email);
-            }
-
-            rs.close();
-            stmt.close();
-            conn.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+			rs.close();
+			stmt.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
-		

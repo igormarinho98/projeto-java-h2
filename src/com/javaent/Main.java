@@ -13,7 +13,7 @@ public class Main {
 
 	        dao.criarTabela();
 
-	        Usuario u = new Usuario(0, "Igor Marinho", "igor@email.com");
+	        Usuario u = new Usuario(0, "Igor Marinho", "igor@email.com", "PedreiroDigital");
 	        dao.inserirUsuario(u);
 
 	        dao.listarUsuarios();
